@@ -1,0 +1,10 @@
+{% extends 'menu/base.html' %}
+{% load draw_menu %}
+
+{% block content %}
+<div class="home-container">
+    <div class="home">
+        {% draw_menu 'tree_menu_1' %}
+    </div>
+</div>
+{% endblock %}

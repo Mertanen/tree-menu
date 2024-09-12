@@ -1,0 +1,14 @@
+<ul>
+    {% for node in items %}
+    <li>
+        <a href="{% url 'menu:menu_item' item_id=node.item.id %}" class="{% if node.is_active %}active{% endif %}">
+            {{ node.item.title }}
+        </a>
+        {% if node.children and node.is_active %}
+            <ul>
+                {% include 'menu/templatetags/draw_menu.html' with items=node.children %}
+            </ul>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
