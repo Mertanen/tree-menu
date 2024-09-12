@@ -34,12 +34,19 @@ class MenuItemAdmin(admin.ModelAdmin):
     menu_link.short_description = MenuItem._meta.get_field('menu').verbose_name
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        print(request.resolver_match)
         if db_field.name == 'parent':
-            if request.resolver_match.kwargs.get('object_id'): 
+            menu_id = request.GET.get('menu') or request.POST.get('menu')
+            if menu_id:
+                try:
+                    menu_id = int(menu_id)
+                    kwargs['queryset'] = MenuItem.objects.filter(menu_id=menu_id)
+                except (ValueError, Menu.DoesNotExist):
+                    kwargs['queryset'] = MenuItem.objects.none()
+            elif request.resolver_match.kwargs.get('object_id'):
                 item_id = request.resolver_match.kwargs['object_id']
                 menu_id = MenuItem.objects.get(pk=item_id).menu_id
                 kwargs['queryset'] = MenuItem.objects.filter(menu_id=menu_id)
             else:
                 kwargs['queryset'] = MenuItem.objects.none()
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
+

@@ -1,22 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     const menuField = document.getElementById('id_menu');
     const parentField = document.getElementById('id_parent');
-    const parentFieldWrapper = parentField.closest('.field-parent');
+    const selectedParentId = parentField.value;
 
-    if (!menuField.value) {
-        parentFieldWrapper.style.display = 'none';
+    // Инициализация при загрузке формы
+    if (menuField.value) {
+        fetchParentItems(menuField.value, selectedParentId);
     }
 
     menuField.addEventListener('change', function() {
         const menuId = this.value;
+        fetchParentItems(menuId, null); // При смене меню, родительский элемент сбрасывается
+    });
 
-        if (!menuId) {
-            parentFieldWrapper.style.display = 'none';
-            return;
-        }
-
-        parentFieldWrapper.style.display = 'block';
-
+    function fetchParentItems(menuId, selectedParentId = null) {
         const url = window.location.origin + '/admin/get_menu_items/?menu_id=' + menuId;
 
         fetch(url)
@@ -24,16 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) {
                     throw new Error(`Error: ${response.status} ${response.statusText}`);
                 }
-                return response.json();  // Ожидаем JSON
+                return response.json();
             })
             .then(data => {
                 parentField.innerHTML = '<option value="">---------</option>';
                 data.forEach(item => {
-                    parentField.innerHTML += `<option value="${item.id}">${item.title}</option>`;
+                    const isSelected = selectedParentId == item.id ? 'selected' : '';
+                    parentField.innerHTML += `<option value="${item.id}" ${isSelected}>${item.title}</option>`;
                 });
             })
             .catch(error => {
                 console.error('Ошибка при загрузке данных:', error);
             });
-    });
+    }
 });
+
