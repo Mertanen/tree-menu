@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
-    INSTALLED_APPS += ['django_extensions']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
