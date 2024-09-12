@@ -27,4 +27,5 @@ python manage.py runserver 0.0.0.0:8000
 
 # Админ панель
 Логин: admin
+
 Пароль: 1111
