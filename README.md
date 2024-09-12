@@ -1,4 +1,4 @@
-# Тестовое задание Django Tree Menu
+## Тестовое задание Django Tree Menu
 
 Клонирование репозитория
 ```
@@ -24,3 +24,7 @@ pip install -r requirements.txt
 ```
 python manage.py runserver 0.0.0.0:8000 
 ```
+
+# Админ панель
+Логин: admin
+Пароль: 1111
